@@ -11,7 +11,7 @@ export const createSpeechPlugin = (setListening: (active: boolean) => void) => {
         return { active: false };
       },
       apply(tr, value) {
-        const action = tr.getMeta(this);
+        const action = tr.getMeta(speechPluginKey);
         if (action && action.type === "toggle") {
           return { active: !value.active };
         }

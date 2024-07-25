@@ -13,6 +13,7 @@ import "prosemirror-view/style/prosemirror.css";
 import useSpeechToText from "@/hooks/useSpeechToText";
 import { useTextInsertion } from "@/hooks/useTextInsertion";
 import { createSpeechPlugin } from "@/utils/speechPlugin";
+import { MenuItem } from "prosemirror-menu";
 
 // Create a schema with list support
 const mySchema = new Schema({
@@ -30,14 +31,19 @@ const ProseMirrorEditor: React.FC = () => {
     if (editorRef.current && !editorView) {
       const speechPlugin = createSpeechPlugin(setListening);
       const menuItems = buildMenuItems(mySchema);
-      menuItems.fullMenu.push([speechPlugin.menuItem]);
+      // menuItems.fullMenu.push([speechPlugin.menuItem]);
+      const menuItemsArray: MenuItem[][] = menuItems.fullMenu.map((row) =>
+        row.filter((item): item is MenuItem => item instanceof MenuItem)
+      );
+
+      menuItemsArray.push([speechPlugin.menuItem]);
 
       const state = EditorState.create({
         schema: mySchema,
         plugins: [
           ...exampleSetup({
             schema: mySchema,
-            menuContent: menuItems.fullMenu
+            menuContent: menuItemsArray
           }),
           speechPlugin.plugin
         ]

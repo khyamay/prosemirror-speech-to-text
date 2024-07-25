@@ -37,13 +37,11 @@ const useSpeechToText = () => {
       };
 
       recognition.start();
-      console.log("im starting to listen");
     }
 
     return () => {
       if (recognition) {
         recognition.stop();
-        console.log("im stopping to listen");
       }
     };
   }, [listening]);
